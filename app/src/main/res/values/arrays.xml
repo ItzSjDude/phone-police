@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="alarm_tone_names">
+        <item>Alarm Tone 1</item>
+        <item>Alarm Tone 2</item>
+        <item>Alarm Tone 3</item>
+        <item>Alarm Tone 4</item>
+        <item>Alarm Tone 5</item>
+        <item>Alarm Tone 6</item>
+    </string-array>
+
+    <string-array name="alarm_tone_values">
+        <item>tone1</item>
+        <item>tone2</item>
+        <item>tone3</item>
+        <item>tone4</item>
+        <item>tone5</item>
+        <item>tone6</item>
+    </string-array>
+</resources>

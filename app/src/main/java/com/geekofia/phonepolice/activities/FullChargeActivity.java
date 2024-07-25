@@ -1,23 +1,28 @@
 package com.geekofia.phonepolice.activities;
 
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.geekofia.phonepolice.PreferenceKeyItem;
 import com.geekofia.phonepolice.R;
+import com.geekofia.phonepolice.PreferenceKeyManager;
+import com.geekofia.phonepolice.Utils;
 import com.geekofia.phonepolice.databinding.ActivityFullChargeBinding;
 
 public class FullChargeActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private ActivityFullChargeBinding binding;
     private static final String SWITCH_KEY = "full_battery_alert";
     private SharedPreferences sharedPreferences;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +51,6 @@ public class FullChargeActivity extends AppCompatActivity implements SharedPrefe
 
         // Register the preference change listener
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-
-        // Check the current state of the switch preference
-        updateToggleState(sharedPreferences.getBoolean(SWITCH_KEY, false));
     }
 
     @Override
@@ -63,37 +65,80 @@ public class FullChargeActivity extends AppCompatActivity implements SharedPrefe
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @Nullable String key) {
-        if (SWITCH_KEY.equals(key)) {
-            // Handle the change in the switch preference
-            boolean isEnabled = sharedPreferences.getBoolean(SWITCH_KEY, false);
-            updateToggleState(isEnabled);
+        ActivityFullChargeSettingsFragment fragment = (ActivityFullChargeSettingsFragment) getSupportFragmentManager().findFragmentById(R.id.preference_container);
+        if (fragment != null) {
+            if (PreferenceKeyManager.getPreferenceKeyItem("FULL_BATTERY_ALERT_SWITCH").getKey().equals(key)) {
+                boolean isEnabled = sharedPreferences.getBoolean(key, false);
+                String message = PreferenceKeyManager.getPreferenceKeyItem("FULL_BATTERY_ALERT_SWITCH").getFeatureName() + (isEnabled ? " Enabled" : " Disabled");
+                Utils.showToast(this, message);
+            } else if (PreferenceKeyManager.getPreferenceKeyItem("FULL_BATTERY_ALERT_TONE_PICKER").getKey().equals(key)) {
+                // Play the newly selected tone
+                playSelectedTone(sharedPreferences.getString(key, "tone1"));
+                // Update the summary
+                fragment.updatePreferenceSummary(key);
+            }
         }
     }
-
-    private void updateToggleState(boolean isEnabled) {
-        // Perform actions based on the toggle state
-        if (isEnabled) {
-            // Logic when the switch is enabled
-            Toast.makeText(this, "Feature enabled", Toast.LENGTH_SHORT).show();
-        } else {
-            // Logic when the switch is disabled
-            Toast.makeText(this, "Feature disabled", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public static class ActivityFullChargeSettingsFragment extends PreferenceFragmentCompat {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.preferences_activity_full_charge, rootKey);
-        }
-    }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         // Unregister the preference change listener to avoid memory leaks
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+
+        // Release the MediaPlayer when the activity is destroyed
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+
+    private int getToneResource(String tone) {
+        switch (tone) {
+            case "tone1":
+                return R.raw.tone1;
+            case "tone2":
+                return R.raw.tone2;
+            case "tone3":
+                return R.raw.tone3;
+            case "tone4":
+                return R.raw.tone4;
+            case "tone5":
+                return R.raw.tone5;
+            case "tone6":
+                return R.raw.tone6;
+            default:
+                return R.raw.tone1;
+        }
+    }
+
+    private void playSelectedTone(String tone) {
+        int toneResource = getToneResource(tone);
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+
+        // Create a new MediaPlayer for the selected tone
+        mediaPlayer = MediaPlayer.create(this, toneResource);
+        mediaPlayer.start();
+    }
+
+    public static class ActivityFullChargeSettingsFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.preferences_activity_full_charge, rootKey);
+        }
+
+        public void updatePreferenceSummary(String key) {
+            ListPreference listPreference = findPreference(key);
+            if (listPreference != null) {
+                int index = listPreference.findIndexOfValue(listPreference.getValue());
+                if (index >= 0) {
+                    listPreference.setSummary(listPreference.getEntries()[index]);
+                }
+            }
+        }
     }
 }
