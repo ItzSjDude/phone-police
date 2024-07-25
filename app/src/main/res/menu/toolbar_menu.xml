@@ -5,20 +5,17 @@
         android:id="@+id/action_account"
         android:icon="@drawable/baseline_account_circle_24"
         android:title="@string/account_title"
-        app:iconTint="@color/primary"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_notifications"
         android:icon="@drawable/baseline_ad_units_24"
         android:title="@string/notifications_title"
-        app:iconTint="@color/primary"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_logout"
         android:icon="@drawable/baseline_blind_24"
         android:title="@string/logout_title"
-        app:iconTint="@color/primary"
         app:showAsAction="always"  />
 </menu>

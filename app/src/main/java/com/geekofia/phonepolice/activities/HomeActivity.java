@@ -1,6 +1,7 @@
 package com.geekofia.phonepolice.activities;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.geekofia.phonepolice.CardAdapter;
+import com.geekofia.phonepolice.adapters.CardAdapter;
 import com.geekofia.phonepolice.R;
 import com.geekofia.phonepolice.models.CardItem;
 import com.google.android.material.navigation.NavigationView;
@@ -47,8 +48,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -57,15 +57,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         cardItemList = new ArrayList<>();
         // Add card items to the list
-        cardItemList.add(new CardItem("Intruder Alert", R.drawable.ic_intruder));
-        cardItemList.add(new CardItem("Anti Touch Detection", R.drawable.ic_anti_touch));
-        cardItemList.add(new CardItem("Wrong Password Alert", R.drawable.ic_wrong_password));
-        cardItemList.add(new CardItem("Charging Removal Alert", R.drawable.ic_charging_removal));
-        cardItemList.add(new CardItem("Full Battery Alert", R.drawable.ic_full_battery));
-        cardItemList.add(new CardItem("Pocket Alarm", R.drawable.ic_pocket_alarm));
-        cardItemList.add(new CardItem("Pocket Alarm", R.drawable.ic_pocket_alarm));
-        cardItemList.add(new CardItem("Pocket Alarm", R.drawable.ic_pocket_alarm));
-        cardItemList.add(new CardItem("Pocket Alarm", R.drawable.ic_pocket_alarm));
+        cardItemList.add(new CardItem("Intruder Alert", R.drawable.ic_intruder, R.drawable.bg_intruder_card));
+        cardItemList.add(new CardItem("Anti Touch Detection", R.drawable.ic_anti_touch, R.drawable.bg_anti_touch_card));
+        cardItemList.add(new CardItem("Wrong Password Alert", R.drawable.ic_wrong_password, R.drawable.bg_wrong_pass));
+        cardItemList.add(new CardItem("Charging Removal Alert", R.drawable.ic_charging_removal, R.drawable.bg_charger_removal_card));
+        cardItemList.add(new CardItem("Full Battery Alert", R.drawable.ic_full_battery, R.drawable.bg_battery_full_card));
+        cardItemList.add(new CardItem("Pocket Alarm", R.drawable.ic_pocket_alarm, R.drawable.bg_pocket_alarm));
 
         cardAdapter = new CardAdapter(this, cardItemList);
         recyclerView.setAdapter(cardAdapter);
@@ -91,5 +88,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

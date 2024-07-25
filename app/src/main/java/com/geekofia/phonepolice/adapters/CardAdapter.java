@@ -1,4 +1,4 @@
-package com.geekofia.phonepolice;
+package com.geekofia.phonepolice.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.geekofia.phonepolice.R;
 import com.geekofia.phonepolice.models.CardItem;
 import com.google.android.material.card.MaterialCardView;
 

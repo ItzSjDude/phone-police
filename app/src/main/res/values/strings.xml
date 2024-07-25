@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Phone Police</string>
+    <string name="app_name">Cell Security Care</string>
     <string name="card_icon_description">Card icon</string>
     <string name="card_chevron_right">Card chevron right</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -18,5 +18,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="home_title">Home</string>
     <string name="profile_menu_title">Profile</string>
-    <string name="logout_menu_title">Settings</string>
+    <string name="logout_menu_title">Logout</string>
+    <string name="desc_brand_banner">Brand banner</string>
 </resources>
