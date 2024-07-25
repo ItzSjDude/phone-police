@@ -1,29 +1,31 @@
 package com.geekofia.phonepolice.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.geekofia.phonepolice.R;
-import com.geekofia.phonepolice.models.CardItem;
+import com.geekofia.phonepolice.models.SafetyFeatureCardItem;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
+public class SafetyFeatureCardAdapter extends RecyclerView.Adapter<SafetyFeatureCardAdapter.CardViewHolder> {
 
     private final Context context;
-    private final List<CardItem> cardItemList;
+    private final List<SafetyFeatureCardItem> cardItemList;
 
-    public CardAdapter(Context context, List<CardItem> cardItemList) {
+    public SafetyFeatureCardAdapter(Context context, List<SafetyFeatureCardItem> safetyFeatureCardItemList) {
         this.context = context;
-        this.cardItemList = cardItemList;
+        this.cardItemList = safetyFeatureCardItemList;
     }
 
     @NonNull
@@ -35,12 +37,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
-        CardItem cardItem = cardItemList.get(position);
-        holder.cardTitle.setText(cardItem.getTitle());
-        holder.cardIcon.setImageResource(cardItem.getImageResId());
+        // card item
+        SafetyFeatureCardItem safetyFeatureCardItem = cardItemList.get(position);
+
+        holder.cardTitle.setText(safetyFeatureCardItem.getTitle());
+        holder.cardIcon.setImageResource(safetyFeatureCardItem.getImageResId());
 
         holder.cardView.setOnClickListener(v -> {
-            // Handle card click here
+            if (safetyFeatureCardItem.getActivityClass() != null) {
+                Intent intent = new Intent(context, safetyFeatureCardItem.getActivityClass());
+                context.startActivity(intent);
+            } else {
+                Toast.makeText(context, safetyFeatureCardItem.getTitle() + " has no action implemented!", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

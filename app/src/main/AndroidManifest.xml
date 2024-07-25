@@ -13,6 +13,12 @@
         android:theme="@style/Theme.PhonePolice"
         tools:targetApi="31">
         <activity
+            android:name=".activities.BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.FullChargeActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
