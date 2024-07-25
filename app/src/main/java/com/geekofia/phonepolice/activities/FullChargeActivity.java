@@ -5,7 +5,9 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceFragmentCompat;
 
+import com.geekofia.phonepolice.R;
 import com.geekofia.phonepolice.databinding.ActivityFullChargeBinding;
 
 public class FullChargeActivity extends AppCompatActivity {
@@ -26,6 +28,12 @@ public class FullChargeActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+        // Load the preference fragment
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.preference_container, new ActivityFullChargeSettingsFragment())
+                .commit();
     }
 
     @Override
@@ -36,5 +44,13 @@ public class FullChargeActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static class ActivityFullChargeSettingsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.preferences_activity_full_charge, rootKey);
+        }
     }
 }
