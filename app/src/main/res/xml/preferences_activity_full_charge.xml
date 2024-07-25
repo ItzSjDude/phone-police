@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreferenceCompat
         android:defaultValue="false"
-        android:key="enable_disable_switch"
+        android:key="full_battery_alert"
         android:summary="Toggle this switch to enable or disable the full battery alert"
         android:title="Enable Full Battery Alert" />
 
